@@ -7,9 +7,9 @@ Set::Set()
 }
 
 // Constructor for creating a set from an int
-Set::Set(int v)
+Set::Set(int v): head{ new Node(0, nullptr)}
 {
-	head = new Node(0, nullptr);
+	//head = new Node(0, nullptr);
 	insert(head, v);
 }
 
@@ -50,7 +50,7 @@ Set::~Set()
 {
 	Node* p = head;
 
-	while (p->next != nullptr) {
+	while (p != nullptr) {
 		head = p->next;
 		delete p;
 		p = head;
@@ -102,19 +102,6 @@ bool Set::member(int x) const
 // Assignment operator
 Set& Set::operator=(Set s)
 {
-	//Set R{ s };
-	//return R;  // to be deleted
-
-	/*head = new Node(0, nullptr);
-	Node* p1 = s.head->next;
-	Node* p2 = head;
-
-	while (p1 != nullptr) {
-		insert(p2, p1->value);
-		p1 = p1->next;
-		p2 = p2->next;
-	}*/
-
 	Set R(s);
 	std::swap(head, R.head);
 	return *this;
@@ -123,72 +110,77 @@ Set& Set::operator=(Set s)
 
 bool Set::operator<=(const Set& b) const
 {
-	// Add code
-	return false;  // to be deleted
+    Node* p = head->next;
+    
+    while(p != nullptr) {
+        if(!(b.member(p->value))) {
+            return false;
+        }
+        p = p->next;
+    }
+    
+	return true; 
 }
 
 bool Set::operator==(const Set& b) const
 {
-	// Add code
-	return false;  // to be deleted
+	if(this->operator<=(b)){ //Testar om this Šr en delmŠngd av b
+        //Testa om b Šr delmŠngd av this
+        Node* p = b.head->next;
+        
+        while(p != nullptr) {
+            if(!(this->member(p->value))) {
+                return false;
+            }
+            p = p->next;
+        }
+        return true;
+    }
+    
+    return false;
 }
 
 bool Set::operator!=(const Set& b) const
 {
-	// Add code
-	return false;  // to be deleted
+    Set T{*this};
+    
+    if(T==b) {
+        return false;
+    }
+    
+//    if(this->operator==(b)) {
+//        return false;
+//    }
+	return true;
+    //Spelar det roll vilken ordning vi kšr?
 }
 
 bool Set::operator<(const Set& b) const
 {
-	// Add code
-	return false;  // to be deleted
+    Set T{*this};
+    
+    if(this->operator<=(b)){ //Testar om this Šr en delmŠngd av b
+        //Testa om b Šr delmŠngd av this
+//        Node* p = b.head->next;
+//
+//        while(p != nullptr) {
+//            if(!(this->member(p->value))) {
+//                return true;
+//            }
+//            p = p->next;
+//        }
+        if(!(b<=T)) {
+            return true;
+        }
+    }
+    
+	return false;
 }
 
 // Set union
 // Repeated values are not allowed
 Set Set::operator+(const Set& b) const
 {
-	//Set T{}; //skapar empty set
-
-	//Node* pr = this->head;
-	//Node* ps = b.head;
-	//Node* pt = T.head;
-
-	//while (pr != nullptr && ps != nullptr) {
-	//	if (pr->value < ps->value) {
-	//		T.insert(pt, pr->value);
-	//		pt = pt->next;
-	//		pr = pr->next;
-	//	}
-	//	else if (pr->value == ps->value) {
-	//		T.insert(pt, pr->value);
-	//		pt = pt->next;
-	//		pr = pr->next;
-	//		ps = ps->next;
-	//	}
-	//	else {
-	//		T.insert(pt, ps->value);
-	//		pt = pt->next;
-	//		ps = ps->next;
-	//	}
-	//}
-
-	//if (pr == nullptr) {
-	//	while (ps != nullptr) {
-	//		T.insert(pt, ps->value);
-	//		pt = pt->next;
-	//		ps = ps->next;
-	//	}
-	//}
-	//else {
-	//	while (ps != nullptr) {
-	//		T.insert(pt, pr->value);
-	//		pt = pt->next;
-	//		pr = pr->next;
-	//	}
-	//}
-
 	Set T{ b };
 
 	Node* pt = T.head;
@@ -200,46 +192,72 @@ Set Set::operator+(const Set& b) const
 			pt = pt->next;
 		}
 
-		if (T.member(p->value)) { //om värdena lika
+		if (T.member(p->value)) { //om vŠrdena lika
 			p = p->next;
 		}
 		else { //om p->value < pt->next->value
 			T.insert(pt, p->value);
 		}
-
 	}
-	
-
-
 	return T;
 }
 
 // Set intersection
 Set Set::operator*(const Set& b) const
 {
-	// Add code
-	return *this;  // to be deleted
+    Set T{};
+
+    Node* pt = T.head; //pt pekar pŒ dummy node
+    Node* p = head->next; //pekar pŒ noden efter dummy node
+
+    while (p != nullptr){
+        if(b.member(p->value)) {
+            T.insert(pt, p->value);
+            pt = pt->next; //pt pekar nu pŒ det tillagd objektet
+        }
+        p = p->next; //p gŒr fram ett steg
+    }
+	return T;
 }
 
 // Set difference
 Set Set::operator-(const Set& b) const
 {
-	// Add code
-	return *this;  // to be deleted
+	Set T{};
+
+    Node* pt = T.head; //pt pekar pŒ dummy node
+    Node* p = head->next; //pekar pŒ noden efter dummy node
+
+    while (p != nullptr){
+        if(!(b.member(p->value))) { //testar ifall p->value inte finns i b
+            T.insert(pt, p->value);
+            pt = pt->next; //pt pekar nu pŒ det tillagd objektet
+        }
+        p = p->next; //p gŒr fram ett steg
+    }
+    return T;
 }
 
 // Set union with set {x}
 Set Set::operator+(int x) const
 {
 	// Add code
-	return *this;  // to be deleted
+    Set R (x); //Skapa nytt set av x
+    //Set S{*this};
+    //Set T = S+R;
+    //Set T = this->operator+(R); //lŠgga ihop det nya setet och det nuvarande.
+    Set T = *this+R;
+    
+    return T;
 }
 
 // Set difference with set {x}
 Set Set::operator-(int x) const
 {
 	// Add code
-	return *this;  // to be deleted
+    Set R (x); //Skapa ett nytt set av x
+    Set T = this->operator-(R); //dra ifrŒn det nya setet frŒn det nuvarande
+	return T;
 }
 
 // Insert a new node after node pointed by p
@@ -251,15 +269,6 @@ void Set::insert(Node* p, int value) const {
 
 // Remove the node pointed by p
 void Set::remove(Node* p) {
-	/*Node* p2 = head;
-
-	while (p2->next != p) {
-		p2 = p2->next;
-	}
-
-	p2->next = p->next;
-	delete p;*/
-
 	delete p;
 	p = nullptr;
 }

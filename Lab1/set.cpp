@@ -31,7 +31,7 @@ Set::Set(const int a[], int n): head{new Node(0, nullptr)}
 // copy constructor
 Set::Set(const Set& source): head{new Node(0, nullptr)}
 {
-	Node* p1 = source.head->next;
+	Node* p1 = source.head->next; // node to copy
 	Node* p2 = head;
 
 	while (p1 != nullptr) {
@@ -71,6 +71,7 @@ int Set::cardinality() const
 	int howMany = 0;
 
 	Node* p = head->next;
+
 	while (p != nullptr) {
 		howMany++;
 		p = p->next;
@@ -83,7 +84,8 @@ int Set::cardinality() const
 bool Set::member(int x) const
 {
 	Node* p = head->next;
-	while ((p != nullptr) && p->value != x) {
+
+	while ((p != nullptr) && (p->value != x)) {
 		p = p->next;
 	}
 
@@ -98,8 +100,8 @@ bool Set::member(int x) const
 // Assignment operator
 Set& Set::operator=(Set s)
 {
-	Set R(s);
-	std::swap(head, R.head);
+	//Set R(s);
+	std::swap(head, s.head);
 	return *this;
 	
 }
@@ -120,23 +122,23 @@ bool Set::operator<=(const Set& b) const
 
 bool Set::operator==(const Set& b) const
 {
-    //Testa om this Šr en delmŠngd av b
+    //Testa om this är en delmängd av b
 	if(*this<=b){
-        if(b<=*this) return true; //Testa om b Šr delmŠngd av this
+        if(b<=*this) return true; //Testa om b är delmängd av this
     }
     return false;
 }
 
 bool Set::operator!=(const Set& b) const
 {
-    if(*this==b) return false; //Testa om this och b Šr samma mŠngd
+    if(*this==b) return false; //Testa om this och b är samma mängd
 	return true;
 }
 
 bool Set::operator<(const Set& b) const
 {
     if(*this<=(b)){
-        if(!(b<=*this)) return true; //Testa om b Šr delmŠngd av b (kan ocksŒ testa om b==*this)
+        if(!(b<=*this)) return true; //Testa om b är delmängd av b (kan också testa om b==*this)
     }
 	return false;
 }

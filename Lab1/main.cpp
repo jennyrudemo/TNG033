@@ -304,15 +304,7 @@ TEST_SUITE("Phase 3: Set Operations") {
 
         SUBCASE("Add non-existing element") {
             const Set s2{s1 + 999};
-
-			/*const Set m3{ 999 };
-			const Set m4 = s1 + 999;*/
-
             // const Set s2 = 999 + s1; //doesn't compile, so operator+ is not commutative
-
-			/*std::cout << s2 << std::endl;
-			std::cout << m3 << std::endl;
-			std::cout << m4 << std::endl;*/
 
             SUBCASE("Check set cardinality") {
                 CHECK(s2.cardinality() == listSize + 1);

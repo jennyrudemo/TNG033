@@ -1,40 +1,36 @@
 #include "set.hpp"
 
 // Default constructor
-Set::Set()
+Set::Set(): head{new Node(0, nullptr)} //creates empty set with dummy node
 {
-	head = new Node(0, nullptr); //dummy node
+    
 }
 
 // Constructor for creating a set from an int
 Set::Set(int v): head{ new Node(0, nullptr)}
 {
-	//head = new Node(0, nullptr);
 	insert(head, v);
 }
 
 // Constructor creating a set
 // a non-sorted array of n intgers
-Set::Set(const int a[], int n)
+Set::Set(const int a[], int n): head{new Node(0, nullptr)}
 {
-	head = new Node(0, nullptr);
-
 	for (int i = 0; i < n; i++) {
-		Node* p = head; //r‰tt pekare?
-
-		while ((p->next != nullptr) && (a[i] > (p->next->value))) { //l‰gg till villkor att a[i]>p->next value
-
+        
+		Node* p = head; //p pekar på dummy node
+        
+		while ((p->next != nullptr) && (a[i] > (p->next->value))) {
 			p = p->next; //p hoppar fram ett steg
-
 		}
-		insert(p, a[i]); //s‰tt in ny node efter p
+        
+		insert(p, a[i]); //sätt in ny node efter p
 	}
 }
 
 // copy constructor
-Set::Set(const Set& source)
+Set::Set(const Set& source): head{new Node(0, nullptr)}
 {
-	head = new Node(0, nullptr);
 	Node* p1 = source.head->next;
 	Node* p2 = head;
 
@@ -124,56 +120,24 @@ bool Set::operator<=(const Set& b) const
 
 bool Set::operator==(const Set& b) const
 {
-	if(this->operator<=(b)){ //Testar om this är en delmängd av b
-        //Testa om b är delmängd av this
-        Node* p = b.head->next;
-        
-        while(p != nullptr) {
-            if(!(this->member(p->value))) {
-                return false;
-            }
-            p = p->next;
-        }
-        return true;
+    //Testa om this är en delmängd av b
+	if(*this<=b){
+        if(b<=*this) return true; //Testa om b är delmängd av this
     }
-    
     return false;
 }
 
 bool Set::operator!=(const Set& b) const
 {
-    Set T{*this};
-    
-    if(T==b) {
-        return false;
-    }
-    
-//    if(this->operator==(b)) {
-//        return false;
-//    }
+    if(*this==b) return false; //Testa om this och b är samma mängd
 	return true;
-    //Spelar det roll vilken ordning vi kör?
 }
 
 bool Set::operator<(const Set& b) const
 {
-    Set T{*this};
-    
-    if(this->operator<=(b)){ //Testar om this är en delmängd av b
-        //Testa om b är delmängd av this
-//        Node* p = b.head->next;
-//
-//        while(p != nullptr) {
-//            if(!(this->member(p->value))) {
-//                return true;
-//            }
-//            p = p->next;
-//        }
-        if(!(b<=T)) {
-            return true;
-        }
+    if(*this<=(b)){
+        if(!(b<=*this)) return true; //Testa om b är delmängd av b (kan också testa om b==*this)
     }
-    
 	return false;
 }
 
@@ -241,11 +205,7 @@ Set Set::operator-(const Set& b) const
 // Set union with set {x}
 Set Set::operator+(int x) const
 {
-	// Add code
     Set R (x); //Skapa nytt set av x
-    //Set S{*this};
-    //Set T = S+R;
-    //Set T = this->operator+(R); //lägga ihop det nya setet och det nuvarande.
     Set T = *this+R;
     
     return T;
@@ -254,7 +214,6 @@ Set Set::operator+(int x) const
 // Set difference with set {x}
 Set Set::operator-(int x) const
 {
-	// Add code
     Set R (x); //Skapa ett nytt set av x
     Set T = this->operator-(R); //dra ifrån det nya setet från det nuvarande
 	return T;

@@ -16,7 +16,7 @@
     //Vad är det vi ska ta bort?
 }*/
 
-bool Expression::isRoot(double x) {
+bool Expression::isRoot(double x) const {
     if(this->operator()(x) < abs(EPSILON)) return true; //om funktionens värde av x är nära noll returneras true
     return false; //annars returneras false
 }

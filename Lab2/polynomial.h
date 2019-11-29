@@ -15,13 +15,13 @@ class Polynomial : public Expression
 {
 public:
     //Default constructor
-    Polynomial();
+    explicit Polynomial();
     
     //Constructor
     Polynomial(int n, double v[]); //kan vi skicka in arrayen som referens?
     
     //Conversion constructor //bör den vara explicit?
-    explicit Polynomial(const double d);
+     Polynomial(const double d);
     
     //Copy constructor
     Polynomial(const Polynomial& source);
@@ -33,13 +33,14 @@ public:
     Polynomial& operator=(Polynomial P);
     
     //Addition operator
-    Polynomial operator+(const Polynomial& P) const;
+    Polynomial operator+=(const Polynomial& P);
     
     //operator()
     double operator()(double d) const override;
     
     //subscript operator
-    double& operator[](int i) const;
+	double& operator[](int i);
+	const double& operator[](int i) const;
     
     //clone
     Polynomial* clone() const override;

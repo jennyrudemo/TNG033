@@ -22,7 +22,7 @@ public:
     virtual ~Expression() = default;
     
     //Member functions
-    virtual bool isRoot(double x);//test if a given value x is the root of the function
+    virtual bool isRoot(double x) const;//test if a given value x is the root of the function
     
     
     //Pure virtual functions

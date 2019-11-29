@@ -141,16 +141,16 @@ int main() {
     std::cout << "l1 = " << l1 << '\n';
     std::cout << "l2 = " << l2 << '\n';
 
-        Expression* e1 = new Polynomial(p4);
-        Expression* e2 = new Logarithm(l1);
+  //      Expression* e1 = new Polynomial(p4);
+  //      Expression* e2 = new Logarithm(l1);
 
-		std::cout << "e1: " << *e1 << std::endl;
-		std::cout << "e2: " << *e2 << std::endl;
+		//std::cout << "e1: " << *e1 << std::endl;
+		//std::cout << "e2: " << *e2 << std::endl;
 
-        *e1 = *e2; //<-- should not compile!!
+  //      *e1 = *e2; //<-- should not compile!!
 
-		std::cout << "e1: " << *e1 << std::endl;
-		std::cout << "e2: " << *e2 << std::endl;
+		//std::cout << "e1: " << *e1 << std::endl;
+		//std::cout << "e2: " << *e2 << std::endl;
 
     /*****************************************************
      * TEST PHASE 8                                      *

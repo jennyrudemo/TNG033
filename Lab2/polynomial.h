@@ -27,7 +27,7 @@ public:
     Polynomial(const Polynomial& source);
     
     //Destructor
-    ~Polynomial() = default; //skriv om!
+    ~Polynomial(); //skriv om!
     
     //Assignment operator
     Polynomial& operator=(Polynomial P);

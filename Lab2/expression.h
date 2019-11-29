@@ -24,6 +24,7 @@ public:
     //Member functions
     virtual bool isRoot(double x) const;//test if a given value x is the root of the function
     
+	Expression& operator=(Expression& E) = delete;
     
     //Pure virtual functions
     virtual double operator()(double d) const = 0; //ska den returnera värde, referens eller pointer?

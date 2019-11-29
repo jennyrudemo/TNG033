@@ -26,11 +26,16 @@ Logarithm::Logarithm(const Logarithm& source) : c1{ source.c1 }, c2{ source.c2},
 {
 }
 
+////destructor
+//Logarithm::~Logarithm() {
+//	delete E;
+//	E = nullptr;
+//}
+
 Logarithm& Logarithm::operator=(Logarithm L){
 	//std::swap(c1, L.c1);
 	//std::swap(c2, L.c2);
 	//std::swap(b, L.b);
-	std::cout << "välkommen det fungerar 22 ";
 	c1 = L.c1;
 	c2 = L.c2;
 	b = L.b;

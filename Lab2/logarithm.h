@@ -22,6 +22,8 @@ public:
 
 	Logarithm(const Logarithm& source);
 
+	//~Logarithm();
+
 	Logarithm& operator=(Logarithm L);
 
 	virtual void display(std::ostream& os) const override;

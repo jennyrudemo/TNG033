@@ -35,13 +35,18 @@ Polynomial::Polynomial(const Polynomial& source) : degree{source.degree}, coeffi
     }
 }
 
+//destructor
+Polynomial::~Polynomial() {
+	delete[] coefficients;
+	coefficients = nullptr;
+}
+
 Polynomial& Polynomial::operator=(Polynomial P)
 {
     
     //ADD CODE
     //std::swap(degree, P.degree);
 	degree = P.degree;
-	std::cout << "välkommen det fungerar ";
     std::swap(coefficients, P.coefficients);
     
     //swap coefficients

@@ -11,7 +11,7 @@
 
 #include "expression.h"
 
-class Logarithm : public Expression
+class Logarithm : virtual public Expression
 {
 
     //ADD CODE
@@ -22,7 +22,7 @@ public:
 
 	Logarithm(const Logarithm& source);
 
-	//~Logarithm();
+	virtual ~Logarithm();
 
 	Logarithm& operator=(Logarithm L);
 

@@ -6,6 +6,7 @@
 #include "logarithm.h"
 #include "polynomial.h"
 #include <cmath>
+#include <iomanip>
 
 
 //default constructor
@@ -22,15 +23,15 @@ Logarithm::Logarithm(const Expression& F, int l1, int l2, int a) : c1{ l1 }, c2{
 }
 
 //copy constructor
-Logarithm::Logarithm(const Logarithm& source) : c1{ source.c1 }, c2{ source.c2}, b{ source.b }, E{ source.E }
+Logarithm::Logarithm(const Logarithm& source) : c1{ source.c1 }, c2{ source.c2}, b{ source.b }, E{ source.E->clone() }
 {
 }
 
-////destructor
-//Logarithm::~Logarithm() {
-//	delete E;
-//	E = nullptr;
-//}
+//destructor
+Logarithm::~Logarithm() {
+	delete E;
+	E = nullptr;
+}
 
 Logarithm& Logarithm::operator=(Logarithm L){
 	//std::swap(c1, L.c1);
@@ -46,7 +47,7 @@ Logarithm& Logarithm::operator=(Logarithm L){
 
 void Logarithm::display(std::ostream& os) const {
 	if (c1 != 0) {
-		os << c1 << " + ";
+		os << std::fixed << std::setprecision(2) << c1 << " + ";
 	}
 	if (c2 != 0) {
 		os << c2 << " * Log_" << b << "( " << *E << " )";

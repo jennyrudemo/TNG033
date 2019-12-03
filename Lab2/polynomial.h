@@ -11,7 +11,7 @@
 #include "expression.h"
 
 
-class Polynomial : public Expression
+class Polynomial : virtual public Expression
 {
 public:
     //Default constructor
@@ -27,7 +27,7 @@ public:
     Polynomial(const Polynomial& source);
     
     //Destructor
-    ~Polynomial(); //skriv om!
+    virtual ~Polynomial(); //skriv om!
     
     //Assignment operator
     Polynomial& operator=(Polynomial P);

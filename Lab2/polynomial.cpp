@@ -5,6 +5,7 @@
 
 #include "polynomial.h"
 #include <cmath>
+#include <iomanip>
 
 //ADD implementation of the member functions for class Polynomial
 //Default constructor
@@ -135,14 +136,14 @@ Polynomial operator+(Polynomial lhs, const Polynomial& rhs)
 
 void Polynomial::display(std::ostream& os) const
 {
-	os << coefficients[0];
+	os << std::fixed << std::setprecision(2) << coefficients[0];
     for(int i = 1; i <= degree; i++) {
         if(coefficients[i] != 0) {
             //if(i == 0) {
                // os << coefficients[i];
             //}
            //else{
-                os << " + " << coefficients[i] << " * X^" << i;
+                os << std::fixed << std::setprecision(2) << " + " << coefficients[i] << " * X^" << i;
            //}
         }
         

@@ -25,20 +25,13 @@ void toLower(std::string& word) {
 //kollar spec tecken
 struct isNotSpecChar {
 	bool operator()(char& c) {
-		switch (c) {
-		case '.':
-		case ',':
-		case '!':
-		case '?':
-		case ':':
-		case '/':
-		case '"':
-		case '(':
-		case ')':
-		case ';':
-		case '\n':
+
+		std::string specChar = ".,!?:/();\"";
+
+		if (specChar.find(c) != std::string::npos) {
 			return false;
-		default:
+		}
+		else {
 			return true;
 		}
 	}

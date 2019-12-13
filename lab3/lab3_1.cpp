@@ -13,9 +13,7 @@
 #include<cctype>
 #include<iterator>
 
-//to do:
-//fixa blankspacet som läses in i slutet
-//para ihop orden med sorterad vector
+using pair = std::pair<std::string, int>;
 
  //to lowercase
 void toLower(std::string& word) {
@@ -25,63 +23,67 @@ void toLower(std::string& word) {
 }
 
 //kollar spec tecken
-bool isSpecChar(char& c) {
-	switch (c) {
-	case '.':
-	case ',':
-	case '!':
-	case '?':
-	case ':':
-	case '/':
-	case '"':
-	case '(':
-	case ')':
-	case ';':
-	case '\n':
-		return true;
-	default:
-		return false;
+struct isNotSpecChar {
+	bool operator()(char& c) {
+		switch (c) {
+		case '.':
+		case ',':
+		case '!':
+		case '?':
+		case ':':
+		case '/':
+		case '"':
+		case '(':
+		case ')':
+		case ';':
+		case '\n':
+			return false;
+		default:
+			return true;
+		}
 	}
-}
+};
 
 //ta bort spec tecken
-void removeSpecChar(std::string& word) {
-	word.erase(std::remove_if(word.begin(), word.end(), &isSpecChar), word.end());
+std::string removeSpecChar(std::string& word) {
+	std::string temp;
+	std::copy_if(word.begin(), word.end(), std::back_inserter(temp), isNotSpecChar());
+	return temp;
 }
 
-void print(std::map<std::string, int> &map) {
-	std::for_each(map.cbegin(), map.cend(), [](const std::pair<std::string, int> &m) {
-		std::cout << std::left << std::setw(15) << m.first << m.second << std::endl;
-	});
+struct displayWord {
+	void operator()(pair w) {
+		std::cout << std::left << std::setw(25) << w.first << w.second << std::endl;
+	}
+};
+
+template <class T>
+void print (T table) {
+	std::for_each(table.begin(), table.end(), displayWord());
 }
 
-void printVec(std::vector<int> &v) {
-	std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, "  "));
-}
-
-bool largestFirst(int i, int j) {
-	return i > j;
+bool sortByFreq(const pair &a, const pair &b) {
+	return a.second > b.second;
 }
 
 int main() {
 	std::map<std::string, int> frequencyTable;
-	std::vector<int> sortedFrequency;
 	std::string word;
+	std::string wordNoSpec;
 	int numberOfWords = 0;
-	int numberUniqueOfWords = 0;
 
-	std::ifstream inFil("C:/Users/jx/Documents/Uni/TNG033/lab3/lab3_1/uppgift1_kort.txt"); 
+	//std::ifstream inFil("C:/Users/jx/Documents/Uni/TNG033/lab3/lab3_1/uppgift1_kort.txt"); 
+	std::ifstream inFil("C:/Users/jx/Documents/Uni/TNG033/lab3/lab3_1/uppgift1.txt");
 
 	if (!inFil) {
 		std::cout << "File could not be opened!!";
 		return 0;	//quit if file could not be opened
-	}
+	}	
 
-	std::getline(inFil, word, ' ');		
-
-	while (inFil) {
+	//read words
+	while (inFil >> word) {
 		toLower(word);
-		removeSpecChar(word);
+		word = removeSpecChar(word);
 
 		auto it = frequencyTable.find(word);
 
@@ -90,32 +92,25 @@ int main() {
 		}
 		else {
 			frequencyTable.insert({ word, 1 });
-			numberUniqueOfWords++;
 		}
-
-		//std::cout << "hej" << word << std::endl;
-	
+		
 		numberOfWords++;
-		getline(inFil, word, ' ');		//read next word
 	}
 
 	std::cout << "Number of words in the file = " << numberOfWords << std::endl;
-	std::cout << "Number unique words in the file = " << numberUniqueOfWords << std::endl << std::endl;
+	std::cout << "Number of unique words in the file = " << frequencyTable.size() << std::endl << std::endl;
 	
 	std::cout <<  "Frequency table sorted alphabetically..." << std::endl;
 	print(frequencyTable);
 
-	//gör till funktion? 
-	std::transform(frequencyTable.begin(), frequencyTable.end(), std::back_inserter(sortedFrequency),
-		[](const std::pair<std::string, int> &map) {
-		return map.second;
-	});
-	
-	std::sort(sortedFrequency.begin(), sortedFrequency.end(), largestFirst);
-	
+	//vector sort by frequency
+	std::vector<pair> sortedFrequency(frequencyTable.size());
+
+	std::copy(frequencyTable.begin(), frequencyTable.end(), sortedFrequency.begin());
+	std::sort(sortedFrequency.begin(), sortedFrequency.end(), sortByFreq);
+
 	std::cout << std::endl << std::endl << "Frequency table sorted by frequency..." << std::endl;
-	printVec(sortedFrequency);
-	
+	print(sortedFrequency);
 
 	return 0;
 }

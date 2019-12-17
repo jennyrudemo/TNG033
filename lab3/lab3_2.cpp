@@ -13,14 +13,16 @@
 #include <map>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
+#include <set>
 
-void displayVec (std::vector<std::string> vec) {
+void displayVec (std::set<std::string> vec) {
     std::for_each(vec.begin(), vec.end(), [](auto& w){
         std::cout << w << " ";
     });
 }
 
-void displayAnagrams(std::map<std::string, std::vector<std::string>> m) {
+void displayAnagrams(std::map<std::string, std::set<std::string>> m) {
     std::for_each(m.begin(), m.end(), [](auto& s){
         if(s.second.size() >=2) {
             std::cout << "Subject: " << std::left << std::setw(15) << s.first;
@@ -31,14 +33,9 @@ void displayAnagrams(std::map<std::string, std::vector<std::string>> m) {
     });
 }
 
-std::string createSubject (std::string word) {
-    std::sort(word.begin(), word.end());
-    return word;
-}
-
 int main() {
     //Läs in fil
-    std::ifstream inFil ("/Users/jennyrudemo/Documents/Skola/LiU/TNG033/Labs/Lab3/Lab3_ex2/Lab3_ex2/uppgift2.txt");
+    std::ifstream inFil ("//ad.liu.se/home/jesch310/Desktop/lab3 tng033/uppgift2_kort.txt");
     
     //Testa fil
     if(!inFil) {
@@ -52,15 +49,25 @@ int main() {
     std::istream_iterator<std::string> start(inFil); //constructor gör att den pekar i början
     std::istream_iterator<std::string> end; //Vad blir end? Vad pekar den på? Fejkiterator
     
-    std::map<std::string, std::vector<std::string>> anagrams; ///<subject, anagrams(vektor)>
+    //std::map<std::string, std::vector<std::string>> anagrams; ///<subject, anagrams(vektor)>
+	std::map<std::string, std::set<std::string>> anagrams;
+
     int numberOfWords = 0;
     
+	auto createSubject=[](std::string word) {
+		std::sort(word.begin(), word.end());
+		return word;
+	};
+
     //Lägg till ord i map
     //Hoppar automatiskt över white spaces (eftersom start och end är iterators för string)
     std::for_each(start, end, [&anagrams, &numberOfWords](auto& word){
         std::string subject = createSubject(word); //skapa subject av word (alfabetsordna bokstäver)
+
+		anagrams[subject].insert(word);
+
         
-        auto it = anagrams.find(subject); //pekar på subject alt. efter anagrams
+        /*auto it = anagrams.find(subject); //pekar på subject alt. efter anagrams
         
          //kolla om subject finns i anagrams
         if(it != anagrams.end()) {
@@ -77,7 +84,7 @@ int main() {
             //om nej: lägg till nytt subject i anagram
             std::vector<std::string> wordVec(1,word); //skapar vektor med 1 slot och värdet word
             anagrams.insert({subject, wordVec}); //lägger till subject och anagram till vår map
-        }
+        }*/
         numberOfWords++;
     });
     
